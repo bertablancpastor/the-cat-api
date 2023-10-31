@@ -17,11 +17,38 @@
         <button id="get-cat" style="margin-top: 1rem;">Nuevo Gato</button>
     </div>
     <div class="container">
-        <h2 id="width">Width: <span></span></h2>
-        <h2 id="height">Height: <span></span></h2>
+        <h2>Width: <span id="width"></span></h2>
+        <h2>Height: <span id="height"></span></h2>
     </div>
     <script>
         // Suerte !
+        const button = document.querySelector("#get-cat");
+        const img = document.querySelector("#cat-image");
+        const width = document.querySelector("#width");
+        const height = document.querySelector("#height")
+
+        button.addEventListener("click", function () {
+            getRandomCat();
+        })
+
+        async function getRandomCat() {
+            // await -> usado para gestionar funciones que se ejecutan de forma asíncrona, es decir, que van a tardar un ratito más o menos largo, en ejecutarse.
+            // Fetch es hacer una petición GET a la URL que pongo como parámetro
+            const respuesta = await fetch("https://api.thecatapi.com/v1/images/search");
+            console.log("Response", respuesta);
+
+            // 2. Va a procesar la respuesta, para convertirla en un tipo de datos que sea capaz mi programa de entenderlo (objeto, array de objetos) 99% veces
+            // Le decimos a JavaScript que esa respuesta contiene un string en formato JSON. Queremos que lo convierta de string a objeto (o array de objetos)
+            const datos = await respuesta.json();
+            console.log(datos[0].url);
+
+            img.src = datos[0].url;
+            width.textContent = datos[0].width;
+            height.textContent = datos[0].height
+
+        }
+
+
     </script>
 </body>
 
